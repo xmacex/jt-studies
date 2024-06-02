@@ -98,7 +98,7 @@ end
 
 function m_runner()
    while true do
-      clock.sleep(1/4)
+      clock.sync(1/4)
       m()
    end
 end
