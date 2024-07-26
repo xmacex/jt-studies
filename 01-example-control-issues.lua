@@ -1,5 +1,15 @@
---- Part 1. Practical Magic
---- The Teletype version
+---Part 1. Control Issues
+--
+-- start with jf in
+--   shape/sustain.
+--
+-- crow out1 is turtle
+-- crow out2 is random
+--
+--
+--
+-- The Teletype version
+--
 -- #1
 -- EVERY 3: JF.TR 1 1
 -- EVERY 5: JF.TR 3 1
@@ -7,31 +17,31 @@
 -- EVERY 2: JF.TR 5 1
 -- EVERY 7: JF.TR 6 1
 -- EVERY 2: JF.TR 0 0
-
+--
 -- #2
-
+--
 -- #3
-
+--
 -- #4
-
+--
 -- #5
-
+--
 -- #6
-
+--
 -- #7
-
+--
 -- #8
-
+--
 -- #M
 -- @STEP; @DIR RRAND -180 180
 -- CV 1 N @; SCRIPT 1
 -- EVERY 30: CV 2 V RAND 10
-
+--
 -- #I
 -- M 120
 -- @F 0 0 4 4; @SPEED 300
 -- CV.SLEW 2 3000
-
+--
 -- #P
 -- 4   16  19  11
 -- 7   7   0   12
@@ -40,6 +50,16 @@
 -- 19  23  7   19
 
 s = require('sequins')
+Turtle = include("lib/turtle")
+
+function init_turtle()
+   turtle = Turtle:new()
+   turtle:init(1, 1, "e", 1)
+   turtle:fence(p, 0,0,6,4)
+   turtle.viz  = false
+   turtle.echo = false
+   
+end
 
 function init_s1()
    function seq1fn() crow.ii.jf.trigger(1, 1) end
@@ -77,12 +97,25 @@ function init_m()
 end
 
 function m()
+   -- The M script:
+   -- * clock's Turtle's steps
+   -- * randomizers Turtle's direction
+   -- * passes the value in Turtle's current position to crow output 1
+   -- * executes S1, which sends high triggers/resets to a
+   --   number of JF channels.
+   turtle:step()
+   turtle:dir(Turtle.DIRS[math.random(#Turtle.DIRS)]) -- FIXME 4 dirs for now
+   crow.output[1].volts = turtle:value()/2 -- FIXME divide by 2 for now
+
    step_m = seqm()
    if step_m ~= 'skip' then step_m(math.random(10)) end
    s1()
 end
 
 function i()
+   -- The I script:
+   -- * TODO: builds a fence for the Turlte
+   -- * TODO: sets Turtle's speed
    crow.output[2].slew = 3
 end
 
@@ -90,6 +123,8 @@ end
 
 function init()
    redraw()
+   init_p()
+   init_turtle()
    init_s1()
    init_m()
    i()
@@ -103,6 +138,16 @@ function m_runner()
    end
 end
 
+function init_p()
+   p = {
+      { 4,16,19,11},
+      { 7, 7, 0,12},
+      { 0,12,11,16},
+      {11, 7, 4,23},
+      {19,23, 7,19}
+   }
+end
+
 -- TODO the whole turtle thing, on crow output 1
 
 --- UI
@@ -113,10 +158,10 @@ function redraw()
    screen.move(0, 30)
    screen.font_face(1)
    screen.font_size(8)
-   screen.text("study 1")
+   screen.text("study 1.example")
    screen.font_face(10)
    screen.font_size(14)
    screen.move(5, 43)
-   screen.text("Practical Magic")
+   screen.text("Control Issues")
    screen.update()
 end
