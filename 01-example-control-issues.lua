@@ -52,16 +52,17 @@
 s = require('sequins')
 Turtle = include("lib/turtle")
 
+-- Prepare a teletype like running environment.
+
 function init_turtle()
    turtle = Turtle:new()
    turtle:init(1, 1, "e", 1)
-   turtle:fence(p, 0,0,6,4)
    turtle.viz  = false
    turtle.echo = false
-   
 end
 
 function init_s1()
+   -- Definitions for script 1.
    function seq1fn() crow.ii.jf.trigger(1, 1) end
    function seq2fn() crow.ii.jf.trigger(3, 1) end
    function seq3fn() crow.ii.jf.trigger(4, 1) end
@@ -77,6 +78,7 @@ function init_s1()
 end
 
 function s1()
+   -- The script 1.
    local step_1 = seq1()
    if step_1 ~= "skip" then step_1() end
    local step_2 = seq2()
@@ -92,6 +94,7 @@ function s1()
 end
 
 function init_m()
+   -- Definitions for M.
    function mfn(v) crow.output[2].volts = v end
    seqm = s{mfn}:every(30)
 end
@@ -114,9 +117,22 @@ end
 
 function i()
    -- The I script:
-   -- * TODO: builds a fence for the Turlte
-   -- * TODO: sets Turtle's speed
+   -- * builds a fence for the Turtle
+   -- * sets Turtle's speed
+   turtle:fence(p, 0, 0, 4, 4)
+   turtle.speed = 1 		-- FIXME reference speed is 300 (0.3)
    crow.output[2].slew = 3
+end
+
+function init_p()
+   -- Definitions for the pattern.
+   p = {
+      { 4,16,19,11},
+      { 7, 7, 0,12},
+      { 0,12,11,16},
+      {11, 7, 4,23},
+      {19,23, 7,19}
+   }
 end
 
 -- Norns lifecycle things
@@ -137,18 +153,6 @@ function m_runner()
       m()
    end
 end
-
-function init_p()
-   p = {
-      { 4,16,19,11},
-      { 7, 7, 0,12},
-      { 0,12,11,16},
-      {11, 7, 4,23},
-      {19,23, 7,19}
-   }
-end
-
--- TODO the whole turtle thing, on crow output 1
 
 --- UI
 
