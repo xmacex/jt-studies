@@ -52,7 +52,7 @@
 s = require('sequins')
 Turtle = include("lib/turtle")
 
--- Prepare a teletype like running environment.
+--- Prepare a teletype like running environment.
 
 function init_turtle()
    turtle = Turtle:new()
@@ -135,7 +135,7 @@ function init_p()
    }
 end
 
--- Norns lifecycle things
+--- Norns lifecycle things
 
 function init()
    redraw()
@@ -168,4 +168,13 @@ function redraw()
    screen.move(5, 43)
    screen.text("Control Issues")
    screen.update()
+end
+
+function key(n, z)
+   -- Print Turtle status in Maiden.
+   if n == 2 then
+      turtle.echo = z == 1 and true or false
+   elseif n == 3 then
+      turtle.viz = z == 1 and true or false
+   end
 end
