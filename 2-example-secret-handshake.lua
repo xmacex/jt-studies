@@ -58,11 +58,9 @@ s = require('sequins')
 
 DEBUG = false
 
-p = s{
-   s{ 0, 7,0,0},
-   s{ 4,11,0,0},
-   s{ 7,14,0,0},
-   s{11,18,0,0}
+p = {
+   s{0, 4, 7,11},
+   s{7,11,14,18}
 }
 
 function init()
@@ -126,9 +124,8 @@ scripts = {s1, s2, s3, s4, s5}
 
 function m()
    crow.ii.jf.trigger(0,1)
-   crow.output[2].volts = p()
-   -- what is CV 1 n PN.NEXT 1?
-   every( 4, function() crow.output[1].volts = p() end)
+   crow.output[2].volts = p[1]()
+   every( 4, function() crow.output[1].volts = p[1]() end)
    every(16, function() scripts[math.random(#scripts)]() end)
 end
 
