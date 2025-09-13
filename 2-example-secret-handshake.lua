@@ -63,6 +63,11 @@ p = {
    s{7,11,14,18}
 }
 
+s5everyother = s{
+   function() log("every") crow.output[2].volts = 2 end,
+   function() log("other") crow.output[2].volts = 0 end
+}
+
 function init()
    i()
    clock.run(m_runner)
@@ -70,7 +75,7 @@ end
 
 function m_runner()
    while true do
-      clock.sync(1/4)
+      clock.sync(1)
       m()
    end
 end
@@ -111,13 +116,7 @@ end
 function s5()
    log("s5")
    crow.ii.jf.run(-1)
-   if util.round(clock.get_beats()) % 2 == 0 then
-      log("every")
-      crow.output[2].volts = 2
-   else
-      log("other")
-      crow.output[2].volts = 0
-   end
+   s5everyother()()
 end
 
 scripts = {s1, s2, s3, s4, s5}
